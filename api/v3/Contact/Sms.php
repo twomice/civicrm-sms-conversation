@@ -53,7 +53,7 @@ function civicrm_api3_contact_sms($params) {
   // Use the specified SMS provider if it's active, otherwise use the default.
   if ($smsProviderId = CRM_Utils_Array::value('sms_provider_id', $params)) {
     $providers = CRM_SMS_BAO_Provider::getProviders(NULL, array('is_active' => 1, 'id' => $smsProviderId));
-    if (empty($providers)) {
+    if (!empty($providers)) {
       $provider = $providers[0];
     }
   }
