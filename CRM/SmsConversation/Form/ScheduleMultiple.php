@@ -63,6 +63,14 @@ class CRM_SmsConversation_Form_ScheduleMultiple extends CRM_Contact_Form_Task {
       CRM_Core_Session::setStatus('No selected contacts had valid mobile phones.');
     }
 
+    // Add "From" field to indicate SMS provider.
+    $providers = CRM_SMS_BAO_Provider::getProviders(NULL, array("is_active" => 1), TRUE, 'is_default desc');
+    $providerSelect = array();
+    foreach ($providers as $provider) {
+      $providerSelect[$provider['id']] = $provider['title'];
+    }
+    $this->add('select', 'sms_provider_id', ts('From'), $providerSelect, TRUE);
+
   }
 
 
@@ -76,6 +84,7 @@ class CRM_SmsConversation_Form_ScheduleMultiple extends CRM_Contact_Form_Task {
       $params['conversation_id'] = $values['conversation_id'];
       $params['scheduled_date'] = CRM_Utils_Date::processDate($values['scheduled_date'], $values['scheduled_date_time']);
       $params['source_contact_id'] = $session->get('userID');
+      $params['sms_provider_id'] = $values['sms_provider_id'];
       $result = civicrm_api3('SmsConversationContact', 'create', $params);
     }
 

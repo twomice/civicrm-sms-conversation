@@ -99,12 +99,8 @@ class CRM_SmsConversation_Processor {
    *
    * @return bool
    */
-  static function sendSMS($contactId, $text, $sourceContactId = NULL) {
-    $result = civicrm_api3('Contact', 'sms', array(
-      'contact_id' => $contactId,
-      'source_contact_id' => $sourceContactId,
-      'text' => $text,
-    ));
+  static function sendSMS($params) {
+    $result = civicrm_api3('Contact', 'sms', $params);
 
     if (!empty($result['is_error'])) {
       return FALSE;

@@ -86,7 +86,14 @@ class CRM_SmsConversation_BAO_Question extends CRM_SmsConversation_DAO_Question 
       }
       $convContact = $convContactUpdated['values'][$convContactUpdated['id']];
 
-      if (CRM_SmsConversation_Processor::sendSMS($contactId, $question['text'], $convContact['source_contact_id'])) {
+      $params = array(
+        'contact_id' => $contactId,
+        'source_contact_id' => CRM_Utils_Array::value('source_contact_id', $convContact),
+        'text' => CRM_Utils_Array::value('text', $question),
+        'sms_provider_id' => CRM_Utils_Array::value('sms_provider_id', $convContact),
+      );
+
+      if (CRM_SmsConversation_Processor::sendSMS($params)) {
 
         // If there are no actions for the question, we end the conversation
         $convActions = CRM_SmsConversation_BAO_Action::getAction($questionId);

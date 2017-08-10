@@ -40,6 +40,14 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
       ),
     ));
 
+    // Add "From" field to indicate SMS provider.
+    $providers = CRM_SMS_BAO_Provider::getProviders(NULL, array("is_active" => 1), TRUE, 'is_default desc');
+    $providerSelect = array();
+    foreach ($providers as $provider) {
+      $providerSelect[$provider['id']] = $provider['title'];
+    }
+    $this->add('select', 'sms_provider_id', ts('From'), $providerSelect, TRUE);
+
     // export form elements
     parent::buildQuickForm();
   }
@@ -60,6 +68,7 @@ class CRM_SmsConversation_Form_Schedule extends CRM_Core_Form {
     $params['scheduled_date'] = CRM_Utils_Date::processDate($values['scheduled_date'], $values['scheduled_date_time']);
     $params['source_contact_id'] = $session->get('userID');
     $params['process_now'] = TRUE; // Start the conversation immediately
+    $params['sms_provider_id'] = $values['sms_provider_id'];
     // Create new conversation for contact
     try {
       $status = civicrm_api3('SmsConversationContact', 'schedule', $params);

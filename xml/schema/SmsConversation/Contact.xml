@@ -90,6 +90,20 @@
   </foreignKey>
 
   <field>
+    <name>sms_provider_id</name>
+    <type>int unsigned</type>
+    <comment>FK to civicrm_sms_provider.id</comment>
+    <add>4.7</add>
+  </field>
+  <foreignKey>
+    <name>sms_provider_id</name>
+    <table>civicrm_sms_provider</table>
+    <key>id</key>
+    <add>4.7</add>
+    <onDelete>SET NULL</onDelete>
+  </foreignKey>
+
+  <field>
     <name>conversation_record</name>
     <title>Record of conversation</title>
     <type>longtext</type>

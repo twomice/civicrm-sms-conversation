@@ -50,12 +50,20 @@ function civicrm_api3_contact_sms($params) {
     return civicrm_api3_create_error('You should include either a contact_id or group_id in your params');
   }
 
-  // use the default SMS provider
-  $providers=CRM_SMS_BAO_Provider::getProviders(NULL, array('is_default' => 1));
-  if (empty($providers)) {
-    throw new CRM_Core_Exception('No SMS providers found - Cannot send SMS. Please enable at least one!');
+  // Use the specified SMS provider if it's active, otherwise use the default.
+  if ($smsProviderId = CRM_Utils_Array::value('sms_provider_id', $params)) {
+    $providers = CRM_SMS_BAO_Provider::getProviders(NULL, array('is_active' => 1, 'id' => $smsProviderId));
+    if (empty($providers)) {
+      $provider = $providers[0];
+    }
   }
-  $provider = $providers[0];
+  if (empty($provider)) {
+    $providers=CRM_SMS_BAO_Provider::getProviders(NULL, array('is_default' => 1));
+    if (empty($providers)) {
+      throw new CRM_Core_Exception('No SMS providers found - Cannot send SMS. Please enable at least one!');
+    }
+    $provider = $providers[0];
+  }
   $provider['provider_id'] = $provider['id'];
 
   //this should be set somehow when not set (or maybe we need to change the underlying BAO to not require it?)

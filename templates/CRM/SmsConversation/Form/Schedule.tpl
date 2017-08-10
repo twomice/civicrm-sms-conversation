@@ -1,6 +1,10 @@
 <div class="crm-form-block">
   <table class="form-layout">
     <tr>
+       <td>{$form.sms_provider_id.label}</td>
+       <td>{$form.sms_provider_id.html}</td>
+    </tr>
+    <tr>
       <td>{$form.conversation_id.label}</td>
       <td>{$form.conversation_id.html}</td>
     </tr>

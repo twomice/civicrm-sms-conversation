@@ -85,13 +85,14 @@ CREATE TABLE `civicrm_sms_conversation_contact` (
      `status_id` int unsigned NOT NULL   COMMENT 'Conversation Status ID',
      `current_question_id` int unsigned    COMMENT 'FK to sms_conversation_question.id',
      `source_contact_id` int unsigned    COMMENT 'Id of contact that started the conversation',
+     `sms_provider_id` int(10) unsigned DEFAULT NULL COMMENT 'FK to civicrm_sms_provider.id',
      `conversation_record` longtext    COMMENT 'Record of all questions, answers',
      `scheduled_date` timestamp NULL  DEFAULT CURRENT_TIMESTAMP COMMENT 'Date and time this SMS Conversation was scheduled.'
      ,
      PRIMARY KEY (`id`)
 
 
-     ,          CONSTRAINT FK_civicrm_sms_conversation_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_conversation_id FOREIGN KEY (`conversation_id`) REFERENCES `civicrm_sms_conversation`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_current_question_id FOREIGN KEY (`current_question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_source_contact_id FOREIGN KEY (`source_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE
+     ,          CONSTRAINT FK_civicrm_sms_conversation_contact_contact_id FOREIGN KEY (`contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_conversation_id FOREIGN KEY (`conversation_id`) REFERENCES `civicrm_sms_conversation`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_current_question_id FOREIGN KEY (`current_question_id`) REFERENCES `civicrm_sms_conversation_question`(`id`) ON DELETE CASCADE,          CONSTRAINT FK_civicrm_sms_conversation_contact_source_contact_id FOREIGN KEY (`source_contact_id`) REFERENCES `civicrm_contact`(`id`) ON DELETE CASCADE,          CONSTRAINT `civicrm_sms_conversation_contact_sms_provider_id` FOREIGN KEY (`sms_provider_id`) REFERENCES `civicrm_sms_provider` (`id`) ON DELETE SET NULL
 )  ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci  ;
 
 SET foreign_key_checks = 1;
