@@ -74,7 +74,13 @@ class CRM_SmsConversation_Processor {
 
     if (!$isValidAnswer) {
       // Send the invalid message
-      CRM_SmsConversation_Processor::sendSMS($this->sourceContactId, $convQuestion['text_invalid'], $convContact['source_contact_id']);
+      $params = array(
+        'contact_id' => $this->sourceContactId,
+        'source_contact_id' => CRM_Utils_Array::value('source_contact_id', $convContact),
+        'text' => CRM_Utils_Array::value('text_invalid', $convQuestion),
+        'sms_provider_id' => CRM_Utils_Array::value('sms_provider_id', $convContact),
+      );
+      CRM_SmsConversation_Processor::sendSMS($params);
     }
     else {
       // Got valid actions, process them
